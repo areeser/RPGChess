@@ -1,0 +1,9 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "RPGChess.data.unityweb",
+"asmCodeUrl": "RPGChess.asm.code.unityweb",
+"asmMemoryUrl": "RPGChess.asm.memory.unityweb",
+"asmFrameworkUrl": "RPGChess.asm.framework.unityweb",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#222C36"
+}
