@@ -21,6 +21,7 @@ public class Bishop : Piece {
     public override void Move(Vector3 target)
     {
         base.Move(target);
+        MovePiece.EndTurn();
     }
 
     public override bool CanMove(Vector3 initPos, Vector3 target)

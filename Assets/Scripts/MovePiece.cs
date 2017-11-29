@@ -6,6 +6,7 @@ public class MovePiece : MonoBehaviour {
 
     public Camera cam;
     public static GameObject selectedPiece;
+    public static GameObject movedPiece;
     public GameObject canMove;
     public GameObject canAttack;
 	// Use this for initialization
@@ -35,12 +36,16 @@ public class MovePiece : MonoBehaviour {
                     {
                         DeselectPiece();
                     }
-                    selectedPiece = hit.transform.gameObject;
-                    ShowMoves();
-                    selectedPiece.GetComponent<Piece>().CreateDescription();
-                    if (selectedPiece.tag == "Knight" && !Piece.attacking) {
-                        Knight.knightAtk = true;
-                        selectedPiece.GetComponent<Piece>().atk = true;
+                    if (movedPiece == null || movedPiece == hit.transform.gameObject)
+                    {
+                        selectedPiece = hit.transform.gameObject;
+                        ShowMoves();
+                        selectedPiece.GetComponent<Piece>().CreateDescription();
+                        if (selectedPiece.tag == "Knight" && !Piece.attacking)
+                        {
+                            Knight.knightAtk = true;
+                            selectedPiece.GetComponent<Piece>().atk = true;
+                        }
                     }
                 }
                 //Debug.Log(Board.full[(int) hit.transform.position.y, (int) hit.transform.position.x]);
@@ -62,13 +67,16 @@ public class MovePiece : MonoBehaviour {
                     {
                         DeselectPiece();
                     }
-                    selectedPiece = hit.transform.gameObject;
-                    ShowMoves();
-                    selectedPiece.GetComponent<Piece>().CreateDescription();
-                    if (selectedPiece.tag == "Knight" && !Piece.attacking)
+                    if (movedPiece == null || movedPiece == hit.transform.gameObject)
                     {
-                        Knight.knightAtk = true;
-                        selectedPiece.GetComponent<Piece>().atk = true;
+                        selectedPiece = hit.transform.gameObject;
+                        ShowMoves();
+                        selectedPiece.GetComponent<Piece>().CreateDescription();
+                        if (selectedPiece.tag == "Knight" && !Piece.attacking)
+                        {
+                            Knight.knightAtk = true;
+                            selectedPiece.GetComponent<Piece>().atk = true;
+                        }
                     }
                 }
                 //Debug.Log(Board.full[(int)hit.transform.position.y, (int)hit.transform.position.x]);
@@ -114,6 +122,7 @@ public class MovePiece : MonoBehaviour {
 
     public static void EndTurn() {
         Piece.attacking = false;
+        movedPiece = null;
         if (selectedPiece != null)
         {
             selectedPiece.GetComponent<Piece>().initPos = selectedPiece.transform.position;

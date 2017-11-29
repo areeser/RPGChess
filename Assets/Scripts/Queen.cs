@@ -5,11 +5,14 @@ using System;
 
 public class Queen : Piece {
 
+    public int speed;
+
     // Use this for initialization
     public override void Start()
     {
         attack = 5;
         hp = 5;
+        speed = 8;
         base.Start();
     }
 
@@ -19,6 +22,7 @@ public class Queen : Piece {
 	}
 
     public override bool CanMove(Vector3 initPos, Vector3 target) {
+        Debug.Log(speed);
         bool canMove = false;
         int currX = (int)initPos.x;
         int currY = (int)initPos.y;
@@ -43,6 +47,11 @@ public class Queen : Piece {
             int endPos = Math.Max(currY, (int)target.y);
             for (int i = startPos + 1; i < endPos; ++i)
             {
+                if (i >= speed + startPos)
+                {
+                    //Return false if the selected square is outside movement range
+                    return false;
+                }
                 if (Board.full[i, currX])
                 {
                     blocked = true;
@@ -59,6 +68,11 @@ public class Queen : Piece {
             int endPos = Math.Max(currX, (int)target.x);
             for (int i = startPos + 1; i < endPos; ++i)
             {
+                if (i >= speed + startPos)
+                {
+                    //Return false if the selected square is outside movement range
+                    return false;
+                }
                 if (Board.full[currY, i])
                 {
                     blocked = true;
@@ -81,9 +95,14 @@ public class Queen : Piece {
         int startPosX = Math.Min(currX, (int)target.x) + 1;
         int endPosX = Math.Max(currX, (int)target.x);
         bool blocked = false;
+        //up right or down left
         if (currX - currY == target.x - target.y) {
             int j = startPosX;
             for (int i = startPosY; i < endPosY; ++i) {
+                if (i >= speed + startPosY - 1) {
+                    //Return false if the selected square is outside movement range
+                    return false;
+                }
                 Debug.Log(i + " " + j + Board.full[i, j]);
                 if (Board.full[i, j])
                 {
@@ -96,10 +115,16 @@ public class Queen : Piece {
                 canMove = true;
             }
         }
+        //down right or up left
         else if (currX + currY == target.x + target.y)
         {
             int j = endPosX - 1;
             for(int i = startPosY; i < endPosY; ++i) {
+                if (i >= speed + startPosY - 1)
+                {
+                    //Return false if the selected square is outside movement range
+                    return false;
+                }
                 Debug.Log(i + " " + j);
                 if (Board.full[i, j])
                 {
@@ -118,7 +143,8 @@ public class Queen : Piece {
 
     public override void Attack(GameObject target)
     {
-        if (gameObject.tag == "Queen" && CanMove(initPos, target.transform.position) && Distance(gameObject.transform.position, target.transform.position) == 1)
+
+        if (/*gameObject.tag == "Queen" &&*/ CanMove(initPos, target.transform.position) && Distance(gameObject.transform.position, target.transform.position) == 1)
         {
             target.GetComponent<Piece>().hp -= attack;
             base.Attack(target);

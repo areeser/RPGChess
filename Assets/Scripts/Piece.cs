@@ -44,6 +44,7 @@ public class Piece : MonoBehaviour {
 
     public void MoveTo(Vector3 position)
     {
+        MovePiece.movedPiece = gameObject;
         Board.full[(int)gameObject.transform.position.y, (int)gameObject.transform.position.x] = false;
         gameObject.transform.position = position;
         Board.full[(int)gameObject.transform.position.y, (int)gameObject.transform.position.x] = true;

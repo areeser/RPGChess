@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Pawn : Piece {
+public class Pawn : Queen {
 
     public bool hasMoved = false;
-    public int speed = 2;
     
 
     // Use this for initialization
     public override void Start()
     {
         base.Start();
+        attack = 1;
+        hp = 1;
         speed = 2;
+        InitDisplays();
     }
 	
 	// Update is called once per frame
@@ -23,36 +25,26 @@ public class Pawn : Piece {
 
     public override void Move(Vector3 target) {
         base.Move(target);
-        if (MovePiece.selectedPiece != null) {
+        if (!hasMoved && MovePiece.selectedPiece != null) {
             speed = 1;
+            hasMoved = true;
         }
     }
 
     public override bool CanMove(Vector3 initPos, Vector3 target)
     {
-        bool canMove = false;
-        if (Distance(initPos, target) <= speed) {
-            canMove = true;
-        }
-        return canMove;
+        return base.CanMove(initPos, target);
     }
 
     public override void Attack(GameObject target)
     {
         Debug.Log(Distance(initPos, target.transform.position));
-        if (CanMove(initPos, gameObject.transform.position) && Distance(initPos, target.transform.position) <= speed) {
-            target.GetComponent<Piece>().hp -= attack;
-            if (gameObject.tag == "Pawn")
-            {
-                if (target.GetComponent<Piece>().hp <= 0) {
-                    attack++;
-                    RefreshDisplay();
-                }
-            }
-            base.Attack(target);
-        }
-        else {
-            MovePiece.DeselectPiece();
+        base.Attack(target);
+        if (target.GetComponent<Piece>().hp <= 0)
+        {
+            attack++;
+            speed++;
+            RefreshDisplay();
         }
     }
 
